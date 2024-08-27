@@ -1,5 +1,28 @@
+import copy
+
 import numpy as np
 from .utils import get_val_in_tag
+
+def pop_list_indexes(list, indexes_to_remove):
+    list = copy.copy(list)
+    indexes_to_remove = copy.copy(indexes_to_remove)
+    for index in sorted(indexes_to_remove, reverse=True):
+        list.pop(index)
+    return list
+
+def remove(samples, markers, tag):
+    idx_to_delete = list()
+    for idx, marker in enumerate(markers):
+        tags = marker.split("/")
+        if tag in tags:
+            idx_to_delete.append(idx)
+    #for idx in idx_to_delete:
+    #    print(markers[idx])
+    
+    markers = pop_list_indexes(markers, idx_to_delete)
+    samples = pop_list_indexes(samples.tolist(), idx_to_delete)
+    
+    return np.array(samples), np.array(markers)
 
 def markers_from_events(events, event_id):
     from .utils import get_swap_dict
