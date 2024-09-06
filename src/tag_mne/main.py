@@ -1,7 +1,36 @@
 import copy
 
 import numpy as np
+import mne
+
 from .utils import get_val_in_tag
+
+def get_values_list(epochs, tag):
+    keys = list(epochs.event_id.keys())
+    runs = list()
+    for key in keys:
+        for part in key.split("/"):
+            if "%s:"%tag in part:
+                runs.append(part.split(":")[1])
+    
+    return np.unique(runs).tolist() 
+
+def get_binary_epochs(epochs):
+    id_target = list(epochs["target"].event_id.values())
+    id_nontarget = list(epochs["nontarget"].event_id.values())
+    
+    for id in id_target:
+        if id in id_nontarget:
+            print("id '%s' is in nontarget too"%(str(id)))
+
+    X = epochs.copy()
+
+    Y = X.events
+    Y = mne.merge_events(Y, id_target, 10, True)
+    Y = mne.merge_events(Y, id_nontarget, 1, True)
+    Y = Y[:, -1]
+
+    return X, Y
 
 def pop_list_indexes(list, indexes_to_remove):
     list = copy.copy(list)
@@ -30,7 +59,12 @@ def markers_from_events(events, event_id):
 
     samples = np.array(events)[:, 0]
     
-    markers = ["marker:%s"%str(event_id_swap[val]) for val in np.array(events)[:, 2]]
+    markers = list()
+    for val in np.array(events)[:, 2]:
+        if "marker:" in str(event_id_swap[val]):
+            markers.append(str(event_id_swap[val]))
+        else:
+            markers.append("marker:%s"%str(event_id_swap[val]))
     
     return samples, markers
 
@@ -50,6 +84,25 @@ def events_from_markers(samples, markers, offset = 0):
 def add_event_names(markers, event_names, default_name = 'misc', pre = False):
     for idx, marker in enumerate(markers):
         val = get_val_in_tag(marker, 'marker')
+        
+        event_name = default_name
+        for key, values in event_names.items():
+            if str(val) in values:
+                event_name = key
+                break
+
+        if pre:
+            new = ["event:%s"%(event_name), marker]
+        else:
+            new = [marker, "event:%s"%(event_name)]
+        marker = "/".join(new)
+        markers[idx] = marker
+    return markers
+
+""""
+def add_event_names(markers, event_names, default_name = 'misc', pre = False):
+    for idx, marker in enumerate(markers):
+        val = get_val_in_tag(marker, 'marker')
         if str(val) in list(event_names.keys()):
             event_name = str(event_names[str(val)])
         else:
@@ -61,6 +114,7 @@ def add_event_names(markers, event_names, default_name = 'misc', pre = False):
         marker = "/".join(new)
         markers[idx] = marker
     return markers
+"""
 
 def add_tnt(markers, 
             target = [str(val) for val in range(101, 200)],
