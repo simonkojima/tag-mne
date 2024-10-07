@@ -22,10 +22,10 @@ install_requires=[
 
 setuptools.setup(
     name="tag-mne",
-    version="0.0.1",
+    version="0.0.2",
     author="Simon Kojima",
-    author_email="simon.kojima@outlook.com",
-    description="python library for loading xdf file to mne format object",
+    author_email="simon.kojima@ieee.org",
+    description="python library for working on mne tag",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/simonkojima/tag-mne",

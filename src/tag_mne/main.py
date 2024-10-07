@@ -7,13 +7,13 @@ from .utils import get_val_in_tag
 
 def get_values_list(epochs, tag):
     keys = list(epochs.event_id.keys())
-    runs = list()
+    values = list()
     for key in keys:
         for part in key.split("/"):
             if "%s:"%tag in part:
-                runs.append(part.split(":")[1])
+                values.append(part.split(":")[1])
     
-    return np.unique(runs).tolist() 
+    return np.unique(values).tolist() 
 
 def get_binary_epochs(epochs):
     id_target = list(epochs["target"].event_id.values())
@@ -25,10 +25,17 @@ def get_binary_epochs(epochs):
 
     X = epochs.copy()
 
-    Y = X.events
-    Y = mne.merge_events(Y, id_target, 10, True)
-    Y = mne.merge_events(Y, id_nontarget, 1, True)
-    Y = Y[:, -1]
+    Y = copy.copy(X.events)
+    for idx, y in enumerate(Y[:, 2]):
+        if y in id_target:
+            Y[idx, 2] = 10
+        if y in id_nontarget:
+            Y[idx, 2] = 1
+
+
+    #Y = mne.merge_events(Y, id_target, 10, True)
+    #Y = mne.merge_events(Y, id_nontarget, 1, True)
+    Y = Y[:, 2]
 
     return X, Y
 
