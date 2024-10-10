@@ -8,6 +8,7 @@ pip install tag-mne
 ```
 
 # Usage
+## general
 ```
 import tag_mne as tm
 
@@ -39,10 +40,7 @@ samples, markers = tm.remove(samples, markers, "misc")
 # finally, convert to mne events and event_id
 events, event_id = tm.events_from_markers(samples, makers)
 
-
 # create epochs
-
-## general
 epochs = mne.Epochs(raw = mne_raw_object_run1,
                     events = events,
                     event_id = event_id)
