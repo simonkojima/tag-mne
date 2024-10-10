@@ -28,23 +28,15 @@ def read_requirements(path):
 
 setuptools.setup(
     name="tag-mne",
-    version="0.0.2",
+    #version=read("tag-mne", "VERSION"),
+    version = "0.0.4",
     author="Simon Kojima",
-    author_email="simon.kojima@ieee.org",
-    description="python library for handling tag of mne Epochs object",
+    description="python library for working on mne tag",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/simonkojima/tag-mne",
-    project_urls={
-        "Bug Tracker": "https://github.com/simonkojima/tag-mne/issues",
-    },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    install_requires = read_requirements("requirments.txt"),
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
-    python_requires=">=3.6",
+    packages=setuptools.find_packages(exclude=["tests", ".github"]),
+    #install_requires=read_requirements("requirements.txt"),
+    install_requires=["numpy",
+                      "mne>=1.8"],
 )
