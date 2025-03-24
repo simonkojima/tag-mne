@@ -123,6 +123,23 @@ def add_event_names(markers, event_names, default_name = 'misc', pre = False):
     return markers
 """
 
+def add_stim_misc(markers, 
+            stim = [str(val) for val in range(1, 200)],
+            pre = False):
+    for idx, marker in enumerate(markers):
+        val = get_val_in_tag(marker, 'marker')
+        if val in stim:
+            new_tag = "stim"
+        else:
+            new_tag = "misc"
+        if pre:
+            new = [new_tag, marker]
+        else:
+            new = [marker, new_tag]
+        marker = "/".join(new)
+        markers[idx] = marker
+    return markers
+
 def add_tnt(markers, 
             target = [str(val) for val in range(101, 200)],
             nontarget = [str(val) for val in range(1,100)],

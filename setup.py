@@ -22,7 +22,7 @@ install_requires=[
 
 setuptools.setup(
     name="tag-mne",
-    version="0.0.2",
+    version="0.0.3",
     author="Simon Kojima",
     author_email="simon.kojima@ieee.org",
     description="python library for working on mne tag",
