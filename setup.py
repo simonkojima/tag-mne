@@ -1,44 +1,46 @@
+import io
+import os
 import setuptools
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+def read(*paths, **kwargs):
+    """Read the contents of a text file safely.
+    >>> read("project_name", "VERSION")
+    '0.1.0'
+    >>> read("README.md")
+    ...
+    """
 
-def parse_requirements_file(fname):
-    requirements = list()
-    with open(fname, 'r') as fid:
-        for line in fid:
-            req = line.strip()
-            if req.startswith('#'):
-                continue
-            # strip end-of-line comments
-            req = req.split('#', maxsplit=1)[0].strip()
-            requirements.append(req)
-    return requirements
+    content = ""
+    with io.open(
+        os.path.join(os.path.dirname(__file__), *paths),
+        encoding=kwargs.get("encoding", "utf8"),
+    ) as open_file:
+        content = open_file.read().strip()
+    return content
 
-#install_requires = parse_requirements_file("requirements.txt")
 
-install_requires=[
-]
+def read_requirements(path):
+    return [
+        line.strip()
+        for line in read(path).split("\n")
+        if not line.startswith(('"', "#", "-", "git+"))
+    ]
 
 setuptools.setup(
     name="tag-mne",
+<<<<<<< HEAD
     version="0.0.3",
+=======
+    #version=read("tag-mne", "VERSION"),
+    version = "0.0.5",
+>>>>>>> e63d484eca60eef0e8c2113533c6a4beece2e274
     author="Simon Kojima",
-    author_email="simon.kojima@ieee.org",
     description="python library for working on mne tag",
-    long_description=long_description,
+    long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/simonkojima/tag-mne",
-    project_urls={
-        "Bug Tracker": "https://github.com/simonkojima/tag-mne/issues",
-    },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    install_requires = install_requires,
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
-    python_requires=">=3.6",
+    packages=setuptools.find_packages(exclude=["tests", ".github"]),
+    #install_requires=read_requirements("requirements.txt"),
+    install_requires=["numpy",
+                      "mne>=1.8"],
 )

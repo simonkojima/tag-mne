@@ -106,6 +106,7 @@ def add_event_names(markers, event_names, default_name = 'misc', pre = False):
         markers[idx] = marker
     return markers
 
+<<<<<<< HEAD:src/tag_mne/main.py
 """"
 def add_event_names(markers, event_names, default_name = 'misc', pre = False):
     for idx, marker in enumerate(markers):
@@ -140,6 +141,8 @@ def add_stim_misc(markers,
         markers[idx] = marker
     return markers
 
+=======
+>>>>>>> e63d484eca60eef0e8c2113533c6a4beece2e274:tag_mne/main.py
 def add_tnt(markers, 
             target = [str(val) for val in range(101, 200)],
             nontarget = [str(val) for val in range(1,100)],
@@ -188,19 +191,3 @@ def add_tag(markers, tag, pre = False):
         marker = "/".join(new)
         markers[idx] = marker
     return markers
-
-def modify_events(events,
-                  event_id,
-                  target = [val for val in range(101, 201)],
-                  nontarget = [val for val in range(1, 101)],
-                  event_names = None):
-    
-    samples, markers = markers_from_events(events, event_id)
-    
-    markers = add_event_names(markers, event_names)
-    
-    markers = add_tnt(markers, target, nontarget)
-
-    events, event_id = events_from_markers(samples, markers)
-    
-    return events, event_id
