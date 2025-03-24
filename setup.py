@@ -28,12 +28,8 @@ def read_requirements(path):
 
 setuptools.setup(
     name="tag-mne",
-<<<<<<< HEAD
-    version="0.0.3",
-=======
     #version=read("tag-mne", "VERSION"),
-    version = "0.0.5",
->>>>>>> e63d484eca60eef0e8c2113533c6a4beece2e274
+    version = "0.0.6",
     author="Simon Kojima",
     description="python library for working on mne tag",
     long_description=read("README.md"),
