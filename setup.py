@@ -28,15 +28,14 @@ def read_requirements(path):
 
 setuptools.setup(
     name="tag-mne",
-    #version=read("tag-mne", "VERSION"),
-    version = "0.0.6",
+    version = "0.0.7",
     author="Simon Kojima",
     description="python library for working on mne tag",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/simonkojima/tag-mne",
-    packages=setuptools.find_packages(exclude=["tests", ".github"]),
-    #install_requires=read_requirements("requirements.txt"),
+    packages=setuptools.find_packages(),
     install_requires=["numpy",
                       "mne>=1.8"],
+    license="MIT",
 )

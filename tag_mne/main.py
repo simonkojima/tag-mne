@@ -123,6 +123,25 @@ def add_event_names(markers, event_names, default_name = 'misc', pre = False):
     return markers
 """
 
+def add_event_type(markers, misc = "misc", pre = False, **kwargs):
+    for idx, marker in enumerate(markers):
+        val = get_val_in_tag(marker, 'marker')
+        new_tag = misc
+
+        for key, value in kwargs.items():
+            if val in value:
+                new_tag = key
+                break
+        
+        if pre:
+            new = [new_tag, marker]
+        else:
+            new = [marker, new_tag]
+        marker = "/".join(new)
+        markers[idx] = marker
+        
+    return markers
+
 def add_stim_misc(markers, 
             stim = [str(val) for val in range(1, 200)],
             pre = False):
